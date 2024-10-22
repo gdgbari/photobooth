@@ -64,11 +64,13 @@ def new_main():
                             break
 
                         print("Please enter a valid choice")
-                else:
+
+                if result_2 != "burst" and result_2 != "go back":
                     """photo_number = result_2.split('/')[-1]
                     photo_number = photo_number.split('_')[-1]
                     photo_number = int(photo_number.split('.')[0])"""
-                    session_number = len(os.listdir(folders.get_originals_path())) + 1
+                    with open(os.path.join(settings.get_main_folder_path(), "session.txt"), "r") as session_file:
+                        session_number = int(session_file.read()) + 1
                     session_number = utils.get_string_from_session_number(session_number)
                     photo_name = result_2.split('/')[-1]
 
@@ -78,12 +80,26 @@ def new_main():
                     editor.edit(photo_name, folders.get_originals_path())
                     os.mkdir(os.path.join(folders.get_originals_path(), session_number))
                     current_photos = os.listdir(folders.get_current_path())
+
                     for file_name in current_photos:
                         # Costruisci il percorso completo del file di partenza e di destinazione
                         starting_path = os.path.join(folders.get_current_path(), file_name)
-                        arriving_path = os.path.join(folders.get_originals_path(), session_number)
+                        arriving_path = os.path.join(os.path.join(folders.get_originals_path(), session_number), file_name)
 
                         shutil.move(starting_path, arriving_path)
+
+                    original_photos = os.listdir(folders.get_originals_path())
+
+                    for file_name in original_photos:
+                        if os.path.isfile(os.path.join(folders.get_originals_path(), file_name)):
+                            starting_path = os.path.join(folders.get_originals_path(), file_name)
+                            arriving_path = os.path.join(os.path.join(folders.get_originals_path(), session_number), file_name)
+
+                            shutil.move(starting_path, arriving_path)
+
+                    with open(os.path.join(settings.get_main_folder_path(), "session.txt"), "w") as session_file:
+                        session_file.write(session_number)
+
             # maybe there's the need to add an else here
         elif choice == 2:
             break

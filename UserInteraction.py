@@ -8,7 +8,7 @@ class UserInterface:
 
     def show_initial_menu(self):
         while True:
-            print("Hello. What action do you want to make?")
+            print("What action do you want to make?")
             print("1. Start a new session of photos")
             print("2. Exit")
             choice = int(input("Enter your choice: "))
@@ -29,10 +29,12 @@ class UserInterface:
     def visualize_current_photos(self, path):
         photos_list = os.listdir(path)
         photos_list.sort()
+        # subprocess.Popen(["xdg_open", path])
         while True:
             for i in range(0, len(photos_list)):
                 print(f"{i + 1}. Visualize {photos_list[i]}")
             print(f"{len(photos_list) + 1}. Make another burst")
+            print(f"{len(photos_list) + 2}. Go back")
             choice = int(input("Enter your choice: "))
 
             if 1 <= choice <= (len(photos_list)):
@@ -44,8 +46,10 @@ class UserInterface:
             if choice == len(photos_list) + 1:
                 return "burst"
 
-            if not(1 <= choice <= (len(photos_list))) and not(len(photos_list) + 1):
-                print("Please enter a valid choice")
+            if choice == len(photos_list) + 2:
+                return "go back"
+
+            print("Please enter a valid choice")
 
     def choose_polaroid_effect(self) -> str:
         effect_list = ['Gemini', 'Flutter', 'Android', 'Firebase', 'Kotlin', 'Angular',

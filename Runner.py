@@ -28,25 +28,30 @@ class Runner:
                 return True
                 # aggiungiere il codice che porta poi successivamente a visualizzare l'elenco delle foto
             else:
-                session_number = len(os.listdir(self._folders.get_originals_path())) + 1
+                with open(os.path.join(self._settings.get_main_folder_path(), "session.txt"), "r") as session_file:
+                    session_number = int(session_file.read()) + 1
                 print(f"Session photo number is {session_number}")
+                session_number = utils.get_string_from_session_number(session_number)
                 for i in range(1, photos_number + 1):
-                    self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, i)
+                    target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, i)
                 return True
         else:
             if len(os.listdir(self._folders.get_current_path())) != 0:
-                print("Please pay attention. There are photos you need to see")
+                print("There are precedent photos you need to see")
                 return True
             else:
+                print("Please pay attention. There aren't photos you need to see")
                 return False
 
-    def add_another_burst(self, choice):
+    def add_another_burst(self, choice): # to modify in order to make it more robust
         photo_number = os.listdir(os.path.join(self._folders.get_current_path()))[-1]
         photo_number = photo_number.split('_')[-1]
         photo_number = int(photo_number.split('.')[0])
-        session_number = len(os.listdir(self._folders.get_originals_path()))
+        with open(os.path.join(self._settings.get_main_folder_path(), "session.txt"), "r") as session_file:
+            session_number = int(session_file.read()) + 1
+        session_number = utils.get_string_from_session_number(session_number)
         for i in range(1, choice + 1):
-            self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, photo_number + i)
+            target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, photo_number + i)
 
 
 
