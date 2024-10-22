@@ -1,10 +1,50 @@
 from PIL import Image
-from utils import Platform
+from utils import Platform, detect_os
 import subprocess
 import os
 # I choose to use this functions in a class because then transitioning to a GUI will be easier
 
 class UserInterface:
+
+    def show_initial_menu(self):
+        while True:
+            print("Hello. What action do you want to make?")
+            print("1. Start a new session of photos")
+            print("2. Exit")
+            choice = int(input("Enter your choice: "))
+            if 1 <= choice <= 2:
+                return choice
+
+            print("Please enter a valid choice")
+
+    def show_new_session_menu(self):
+        while True:
+            print("Hoy many photos do wou want to shoot? Please choose a number between 1 and 5 (Press 0 if you want to recover precedent photos)")
+            choice = int(input("Enter your choice: "))
+            if 0 <= choice <= 5:
+                return choice
+
+            print("Please enter a valid choice")
+
+    def visualize_current_photos(self, path):
+        photos_list = os.listdir(path)
+        while True:
+            for i in range(0, len(photos_list)):
+                print(f"{i + 1}. Visualize {photos_list[i]}")
+            print(f"{len(photos_list) + 1}. Make another burst")
+            choice = int(input("Enter your choice: "))
+
+            if 1 <= choice <= (len(photos_list)):
+                op_sys = detect_os()
+                result = self.confirm_shot(os.path.join(path, photos_list[choice - 1]), op_sys)
+                if result is True:
+                    return os.path.join(path, photos_list[choice - 1])
+
+            if choice == len(photos_list) + 1:
+                return "burst"
+
+            if not(1 <= choice <= (len(photos_list))) and not(len(photos_list) + 1):
+                print("Please enter a valid choice")
 
     def choose_polaroid_effect(self) -> str:
         effect_list = ['Gemini', 'Flutter', 'Android', 'Firebase', 'Kotlin', 'Angular',
@@ -35,6 +75,7 @@ class UserInterface:
             image = Image.open(photo_path)
             image.show()
         elif os_platform.is_wsl():
+            print("sono windows")
             windows_path = subprocess.check_output(['wslpath', '-w', photo_path]).decode().strip()
             subprocess.run(['powershell.exe', 'Start-Process', windows_path])
         elif os_platform.is_macos():
@@ -62,5 +103,5 @@ class UserInterface:
     def press_to_shot(self):
         input('press any key to shoot')
 
-    def notify_shot_taken(self):
-        print('shot taken')
+    def notify_shot_taken(self, photo_number):
+        print(f"shot {photo_number} taken")

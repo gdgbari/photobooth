@@ -1,5 +1,7 @@
 import gphoto2 as gp
 import os
+
+import utils
 from SettingsManager import Settings
 from UserInteraction import UserInterface
 
@@ -47,19 +49,20 @@ class PhotoManager:
         finally:
             print('nothing detected')
 
-    def get_shoot_from_pc(self, path, user_interactor : UserInterface):
-        user_interactor.press_to_shot()
+    def get_shoot_from_pc(self, path, user_interactor : UserInterface, session_number, i):
+        # "path" variable contains the path of "current" folder, "session_number" the number of the session, "i" the photo number
+        # user_interactor.press_to_shot()
         # print('Capturing image')
         file_path = self._camera.capture(gp.GP_CAPTURE_IMAGE)
         # print('Camera file path: {0}/{1}'.format(file_path.folder, file_path.name))
-        target = os.path.join(path, file_path.name)
+        target = os.path.join(path, f"DEVFESTBA24_{utils.get_string_from_session_number(session_number)}_{i}.JPG")
         # print('Copying image to', target)
         camera_file = self._camera.file_get(
             file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
         camera_file.save(target)
         os.chmod(target, 0o777)
 
-        user_interactor.notify_shot_taken()
+        user_interactor.notify_shot_taken(i)
         #subprocess.call(['xdg-open', target])
         return target
 

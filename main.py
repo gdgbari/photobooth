@@ -1,3 +1,5 @@
+import shutil
+
 from SettingsManager import Settings
 from FolderManager import FolderManager
 from CameraManager import PhotoManager
@@ -5,6 +7,7 @@ from UserInteraction import UserInterface
 from PhotoTailor import Tailor
 
 import utils
+import os
 
 from Runner import Runner
 
@@ -32,12 +35,61 @@ def main():
     editor.edit(name, folders.get_originals_path())
 
 def new_main():
+    ui = UserInterface()
+    settings = Settings()
+    folders = FolderManager(settings.get_main_folder_path())
+
+    camera = PhotoManager()
+    editor = Tailor()
+
     runner = Runner()
     runner.prepare()
-    while runner.keep_going():
-        runner.main_execution()
 
+    while True:
+        choice = ui.show_initial_menu()
+
+        if choice == 1:
+            photos_number = ui.show_new_session_menu()
+            result = runner.start_new_session(photos_number)
+
+            if result:
+                result_2 = ui.visualize_current_photos(folders.get_current_path())
+                if result_2 == "burst":
+                    while True:
+                        print("How many photos do you want to add?")
+                        choice_2 = int(input("Enter your choice (press 6 if you want to come back): "))
+                        if 1 <= choice_2 <= 5:
+                            runner.add_another_burst(choice_2)
+                        if choice_2 == 6:
+                            break
+
+                        print("Please enter a valid choice")
+                else:
+                    """photo_number = result_2.split('/')[-1]
+                    photo_number = photo_number.split('_')[-1]
+                    photo_number = int(photo_number.split('.')[0])"""
+                    session_number = len(os.listdir(folders.get_originals_path())) + 1
+                    session_number = utils.get_string_from_session_number(session_number)
+                    photo_name = result_2.split('/')[-1]
+
+                    effect_name = ui.choose_polaroid_effect()
+                    effect_path = utils.get_asset_path_from_name(effect_name)
+                    editor.set_infos(result_2, effect_path, folders.get_output_folder_path())
+                    editor.edit(photo_name, folders.get_originals_path())
+                    os.mkdir(os.path.join(folders.get_originals_path(), session_number))
+                    current_photos = os.listdir(folders.get_current_path())
+                    for file_name in current_photos:
+                        # Costruisci il percorso completo del file di partenza e di destinazione
+                        starting_path = os.path.join(folders.get_current_path(), file_name)
+                        arriving_path = os.path.join(folders.get_originals_path(), session_number)
+
+                        shutil.move(starting_path, arriving_path)
+            # maybe there's the need to add an else here
+        elif choice == 2:
+            break
+        #new_session_number = runner.start_new_session()
+        #runner.main_execution()
 
 if __name__ == '__main__':
-    main()
+    new_main()
 
