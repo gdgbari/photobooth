@@ -28,6 +28,7 @@ class UserInterface:
 
     def visualize_current_photos(self, path):
         photos_list = os.listdir(path)
+        photos_list.sort()
         while True:
             for i in range(0, len(photos_list)):
                 print(f"{i + 1}. Visualize {photos_list[i]}")
