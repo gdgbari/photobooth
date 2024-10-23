@@ -1,4 +1,11 @@
 import os
+
+import yaml
+
+import utils
+
+from SettingsManager import Settings
+
 # FOLDERS EXPLANATION
 #
 #    main_folder
@@ -37,3 +44,22 @@ class FolderManager:
 
     def get_output_folder_path(self) -> str:
         return self._output_folder_path
+
+class FileNaming:
+
+    def __init__(self):
+        self._temp_data_path = "./temp_data.yaml"
+        self._settings = Settings()
+
+    def get_photo_name(self) -> str:
+        with open(self._temp_data_path, 'r') as yaml_file:
+            yaml_dict = yaml.safe_load(yaml_file)
+
+        session_number = yaml_dict["session"]
+        session_number = utils.get_string_from_session_number(session_number)
+
+        folder = FolderManager(self._settings.get_main_folder_path())
+        photo_number = utils.get_string_from_photo_number(len(os.listdir(folder.get_current_path())) + 1)
+
+        return f"DEVFESTBA_{session_number}_{photo_number}.jpg"
+
