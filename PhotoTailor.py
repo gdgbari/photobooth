@@ -85,7 +85,7 @@ class Tailor:
 
 
 # DEBUG
-# ph_path = "/home/gape01/PycharmProjects/photobooth/Assets/DEVFESTBA24_0001_02.jpg"
+# ph_path = "/home/gape01/PycharmProjects/photobooth/Assets/DEVFESTBA24_0004_02.jpg"
 # eff_path = "/home/gape01/PycharmProjects/photobooth/Assets/Polaroid - 1.png"
 # output_f = "/home/gape01/Desktop"
 # tailor = Tailor(ph_path,eff_path,output_f)

@@ -30,7 +30,7 @@ class UserInterface:
         photos_list = os.listdir(path)
         photos_list.sort()
 
-        subprocess.run(["open", path]) #TODO make it cross platform
+        # subprocess.run(["nautilus", path]) #TODO make it cross platform
 
         while True:
             for i in range(0, len(photos_list)):
@@ -40,10 +40,10 @@ class UserInterface:
             choice = int(input("Enter your choice: "))
 
             if 1 <= choice <= (len(photos_list)):
-                op_sys = detect_os()
+                """op_sys = detect_os()
                 result = self.confirm_shot(os.path.join(path, photos_list[choice - 1]), op_sys)
-                if result is True:
-                    return os.path.join(path, photos_list[choice - 1])
+                if result is True:"""
+                return os.path.join(path, photos_list[choice - 1])
 
             if choice == len(photos_list) + 1:
                 return "burst"

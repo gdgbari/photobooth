@@ -15,4 +15,4 @@ class PrinterManager:
 
 # DEBUG
 printer = PrinterManager(utils.detect_os())
-printer.print('/home/gape01/Desktop/main/output/DEVFESTBA24_0001_02.jpg')
+printer.print('/home/gape01/Desktop/main/output/DEVFESTBA24_0004_02.jpg')
