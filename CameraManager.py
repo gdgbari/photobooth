@@ -55,7 +55,7 @@ class PhotoManager:
         # print('Capturing image')
         file_path = self._camera.capture(gp.GP_CAPTURE_IMAGE)
         # print('Camera file path: {0}/{1}'.format(file_path.folder, file_path.name))
-        target = os.path.join(path, f"DEVFESTBA24_{session_number}_{i}.JPG")
+        target = os.path.join(path, f"DEVFESTBA24_{session_number}_{i}.jpg")
         # print('Copying image to', target)
         camera_file = self._camera.file_get(
             file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)

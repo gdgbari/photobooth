@@ -33,7 +33,7 @@ class Runner:
                 print(f"Session photo number is {session_number}")
                 session_number = utils.get_string_from_session_number(session_number)
                 for i in range(1, photos_number + 1):
-                    target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, i)
+                    target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, utils.get_string_from_photo_number(i))
                 return True
         else:
             if len(os.listdir(self._folders.get_current_path())) != 0:
@@ -43,15 +43,15 @@ class Runner:
                 print("Please pay attention. There aren't photos you need to see")
                 return False
 
-    def add_another_burst(self, choice): # to modify in order to make it more robust
-        photo_number = os.listdir(os.path.join(self._folders.get_current_path()))[-1]
+    def add_another_burst(self, choice):
+        photo_number = list(os.listdir(os.path.join(self._folders.get_current_path())))[-1] # to make sure the names of photos in order to take the right number to continue the acquisition
         photo_number = photo_number.split('_')[-1]
         photo_number = int(photo_number.split('.')[0])
         with open(os.path.join(self._settings.get_main_folder_path(), "session.txt"), "r") as session_file:
             session_number = int(session_file.read()) + 1
         session_number = utils.get_string_from_session_number(session_number)
         for i in range(1, choice + 1):
-            target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, photo_number + i)
+            target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, utils.get_string_from_photo_number(photo_number + i))
 
 
 

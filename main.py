@@ -87,11 +87,13 @@ def new_main():
                             with open(os.path.join(settings.get_main_folder_path(), "session.txt"), "r") as session_file:
                                 session_number = int(session_file.read()) + 1
                             session_number = utils.get_string_from_session_number(session_number)
+
                             os.mkdir(os.path.join(folders.get_originals_path(), session_number))
+
                             current_photos = os.listdir(folders.get_current_path())
 
                             for file_name in current_photos:
-                                # Costruisci il percorso completo del file di partenza e di destinazione
+                                # Builing of starting path and arriving path of files
                                 starting_path = os.path.join(folders.get_current_path(), file_name)
                                 arriving_path = os.path.join(os.path.join(folders.get_originals_path(), session_number), file_name)
 
@@ -115,7 +117,7 @@ def new_main():
                             break
                         else:
                             shutil.move(os.path.join(folders.get_originals_path(), photo_name), os.path.join(folders.get_current_path(), photo_name))
-                            os.remove(os.path.join(folders.get_output_folder_path(), photo_name), )
+                            os.remove(os.path.join(folders.get_output_folder_path(), photo_name))
                     else:
                         break
 
