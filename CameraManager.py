@@ -1,9 +1,9 @@
 import gphoto2 as gp
 import os
-
 import utils
 from SettingsManager import Settings
 from UserInteraction import UserInterface
+import shutil
 
 
 # let's be honest, the library chosen is a complete mess, the author himself said that:
@@ -49,22 +49,32 @@ class PhotoManager:
         finally:
             print('nothing detected')
 
-    def get_shoot_from_pc(self, path, user_interactor : UserInterface, session_number, i):
+    def get_shoot_from_pc(self, path, user_interactor : UserInterface, photo_name : str):
         # "path" variable contains the path of "current" folder, "session_number" the number of the session.txt, "i" the photo number
         # user_interactor.press_to_shot()
         # print('Capturing image')
         file_path = self._camera.capture(gp.GP_CAPTURE_IMAGE)
         # print('Camera file path: {0}/{1}'.format(file_path.folder, file_path.name))
-        target = os.path.join(path, f"DEVFESTBA24_{session_number}_{i}.jpg")
+        target = os.path.join(path, photo_name)
         # print('Copying image to', target)
         camera_file = self._camera.file_get(
             file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
         camera_file.save(target)
         os.chmod(target, 0o777)
 
-        user_interactor.notify_shot_taken(i)
+        user_interactor.notify_shot_taken(photo_name)
         #subprocess.call(['xdg-open', target])
         return target
+
+    def get_fake_shoot(self, path, photo_name, user_interactor: UserInterface):
+        # user_interactor.press_to_shot()
+        # file_path = '/mnt/c/Users/gassi/Desktop/main/test.jpg'
+        file_path = "/mnt/c/Users/fcarn/Desktop/Projects/photobooth/Assets/test.jpg"
+        # file_name = input('input file name:')
+        target = os.path.join(path, photo_name)
+        shutil.copyfile(file_path, target)
+        return target
+
 
 # DEBUG
 #settings = Settings()

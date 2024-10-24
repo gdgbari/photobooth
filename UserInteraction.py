@@ -82,7 +82,6 @@ class UserInterface:
             image = Image.open(photo_path)
             image.show()
         elif os_platform.is_wsl():
-            print("sono windows")
             windows_path = subprocess.check_output(['wslpath', '-w', photo_path]).decode().strip()
             subprocess.run(['powershell.exe', 'Start-Process', windows_path])
         elif os_platform.is_macos():

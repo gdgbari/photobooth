@@ -3,6 +3,7 @@ from FolderManager import FolderManager
 from UserInteraction import UserInterface
 from CameraManager import PhotoManager
 from PhotoTailor import Tailor
+from FolderManager import FileNaming
 
 import utils
 import os
@@ -15,6 +16,7 @@ class Runner:
         self._ui = UserInterface()
         self._camera = PhotoManager()
         self._editor = Tailor()
+        self._file_naming = FileNaming()
         self._continue = True
 
     def prepare(self):
@@ -23,35 +25,34 @@ class Runner:
     def start_new_session(self, photos_number):
         # variable "photos_number" contains the number of photos the user wants to make
         if photos_number != 0:
-            if len(os.listdir(self._folders.get_current_path())) != 0:
+            if self._folders.get_current_folder_length() != 0:
                 print("Please pay attention. There are photos you need to see")
                 return True
                 # aggiungiere il codice che porta poi successivamente a visualizzare l'elenco delle foto
             else:
-                with open(os.path.join(self._settings.get_main_folder_path(), "session.txt"), "r") as session_file:
-                    session_number = int(session_file.read()) + 1
-                print(f"Session photo number is {session_number}")
-                session_number = utils.get_string_from_session_number(session_number)
-                for i in range(1, photos_number + 1):
-                    target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, utils.get_string_from_photo_number(i))
+                session_number = self._file_naming.get_session_number()
+                print(f"Session photo number is {int(session_number) + 1}")
+                self.add_another_burst(photos_number)
+                """for i in range(1, photos_number + 1):
+                    target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, self._file_naming.get_photo_name())"""
                 return True
         else:
-            if len(os.listdir(self._folders.get_current_path())) != 0:
+            if self._folders.get_current_folder_length() != 0:
                 print("There are precedent photos you need to see")
                 return True
             else:
                 print("Please pay attention. There aren't photos you need to see")
                 return False
 
-    def add_another_burst(self, choice):
-        photo_number = list(os.listdir(os.path.join(self._folders.get_current_path())))[-1] # to make sure the names of photos in order to take the right number to continue the acquisition
+    def add_another_burst(self, photos_number : int):
+        """photo_number = list(os.listdir(os.path.join(self._folders.get_current_path())))[-1] # to make sure the names of photos in order to take the right number to continue the acquisition
         photo_number = photo_number.split('_')[-1]
         photo_number = int(photo_number.split('.')[0])
         with open(os.path.join(self._settings.get_main_folder_path(), "session.txt"), "r") as session_file:
             session_number = int(session_file.read()) + 1
-        session_number = utils.get_string_from_session_number(session_number)
-        for i in range(1, choice + 1):
-            target = self._camera.get_shoot_from_pc(self._folders.get_current_path(), self._ui, session_number, utils.get_string_from_photo_number(photo_number + i))
+        session_number = utils.get_string_from_session_number(session_number)"""
+        for i in range(1, photos_number + 1):
+            target = self._camera.get_fake_shoot(self._folders.get_current_path(), self._file_naming.get_photo_name(), self._ui)
 
 
 
