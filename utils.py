@@ -61,12 +61,13 @@ def detect_os():
 
     return output_obj
 
+
 def get_string_from_photo_number(photo_number):
 
     if len(str(photo_number)) == 1:
         return f"0{photo_number}"
 
-    return photo_number
+    return str(photo_number)
 
 def get_string_from_session_number(session_number):
 
@@ -77,5 +78,14 @@ def get_string_from_session_number(session_number):
     elif len(str(session_number)) == 3:
         return f"0{session_number}"
 
-    return session_number
+    return str(session_number)
 
+
+
+
+def get_string_from_photo_number(photo_number):
+
+    if len(str(photo_number)) == 1:
+        return f"0{photo_number}"
+
+    return photo_number

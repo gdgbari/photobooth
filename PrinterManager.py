@@ -3,6 +3,10 @@ import subprocess
 import utils
 from utils import Platform
 
+# WARNING THIS FILE IS DEPRECATED IN FAVOR OF new_print.py 
+# this because there was some important issues with the printer and in that file the right solution was hardcoded,
+# in future both these files needs to be merged in a more organic way
+
 class PrinterManager:
 
     def __init__(self, os_platform: Platform):
@@ -82,9 +86,11 @@ class PrinterManager:
 
 
 # DEBUG
-printer = PrinterManager(utils.detect_os())
+# printer = PrinterManager(utils.detect_os())
+# printer.print('/home/gape01/Desktop/main/output/DEVFESTBA24_0004_02.jpg')
 # printer.print('/mnt/c/Users/gassi/Desktop/main/output/test.jpg')
 # printer.print('/home/gape01/Desktop/main/output/test.jpg')
-printer.prepare()
-printer.print('/home/gape01/Desktop/main/output/DEVFESTBA_0003_01-DEVFESTBA_0003_01_00.jpg')
+# printer.prepare()
+# printer.print('/home/gape01/Desktop/main/output/DEVFESTBA_0003_01-DEVFESTBA_0003_01_00.jpg')
 # typo
+

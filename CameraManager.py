@@ -1,8 +1,9 @@
 import gphoto2 as gp
 import os
-import shutil
+import utils
 from SettingsManager import Settings
 from UserInteraction import UserInterface
+import shutil
 
 
 # let's be honest, the library chosen is a complete mess, the author himself said that:
@@ -48,6 +49,7 @@ class PhotoManager:
         finally:
             print('nothing detected')
 
+
     def get_shoot_from_pc(self, path, photo_name, user_interactor : UserInterface):
         user_interactor.press_to_shot()
         # print('Capturing image')
@@ -60,9 +62,10 @@ class PhotoManager:
         camera_file.save(target)
         os.chmod(target, 0o777)
 
-        user_interactor.notify_shot_taken()
+        user_interactor.notify_shot_taken(photo_name)
         #subprocess.call(['xdg-open', target])
         return target
+
 
     def get_fake_shoot(self, path, photo_name, user_interactor : UserInterface):
         user_interactor.press_to_shot()
