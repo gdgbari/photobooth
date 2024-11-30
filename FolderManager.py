@@ -3,7 +3,7 @@ import yaml
 import utils
 from SettingsManager import Settings
 import shutil
-
+from logging import DEBUG
 # FOLDERS EXPLANATION
 #
 #    main_folder
@@ -53,6 +53,9 @@ class FolderManager:
 
     def get_current_folder_length(self) -> int:
         return len(os.listdir(self._current_folder_path))
+      
+
+
 
     def clean_current_path(self, final_path, photo_name) -> str:
         """
@@ -113,12 +116,13 @@ class FileNaming:
             yaml_dict = yaml.safe_load(yaml_file)
 
         yaml_dict["session"] = yaml_dict["session"] + 1
-
         with open(self._temp_data_path, 'w') as f:
             yaml.dump(yaml_dict, f, default_flow_style=False, allow_unicode=True)
 
         return utils.get_string_from_session_number(yaml_dict["session"])
 
-    # DEBUG
-    # file_naming = FileNaming()
-    # print(file_naming.increment_session_number())
+
+#DEBUG
+# file_naming = FileNaming()
+# print(file_naming.increment_session_number())
+
